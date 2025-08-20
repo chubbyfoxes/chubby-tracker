@@ -3,3 +3,4 @@
 last_sales.json
 .venv/
 __pycache__/
+.token
