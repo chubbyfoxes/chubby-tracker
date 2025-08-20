@@ -9,8 +9,16 @@ def _format_price_ron(value):
     """
     try:
         ron = Decimal(str(value)) / Decimal(10**18)
-        ron = ron.quantize(Decimal("0.0001"))  # 4 decimales fijos
-        return f"{ron} RON"
+        # Convert to string with all decimals, then trim trailing zeros but keep at least 2 decimals
+        ron_str = format(ron, 'f')
+        if '.' in ron_str:
+            int_part, dec_part = ron_str.split('.')
+            # Remove trailing zeros, but keep at least 2 decimals
+            dec_part = dec_part.rstrip('0')
+            if len(dec_part) < 2:
+                dec_part = dec_part.ljust(2, '0')
+            ron_str = f"{int_part}.{dec_part}"
+        return f"{ron_str} RON"
     except Exception:
         return str(value)
 
@@ -20,8 +28,16 @@ def _format_price_eth(value):
     """
     try:
         eth = Decimal(str(value)) / Decimal(10**18)
-        eth = eth.quantize(Decimal("0.0001"))
-        return f"{eth} ETH"
+        # Show up to 6 decimals for ETH, but keep at least 2
+        eth_str = format(eth, 'f')
+        if '.' in eth_str:
+            int_part, dec_part = eth_str.split('.')
+            # Keep up to 6 decimals, but trim trailing zeros, keep at least 2
+            dec_part = dec_part[:6].rstrip('0')
+            if len(dec_part) < 2:
+                dec_part = dec_part.ljust(2, '0')
+            eth_str = f"{int_part}.{dec_part}"
+        return f"{eth_str} ETH"
     except Exception:
         return str(value)
 
@@ -65,29 +81,29 @@ async def notify_sale(channel: discord.abc.Messageable, sale: dict, collection_n
         price_unit_str = _format_price_eth(unit_price)
 
 
-
-    # URL: Transacción en vez de NFT
-    if market == "ronin" and tx_hash:
-        url = f"https://app.roninchain.com/tx/{tx_hash}"
-    elif market == "opensea" and tx_hash:
-        url = f"https://etherscan.io/tx/{tx_hash}"
-    else:
-        url = discord.Embed.Empty
+    # OpenSea item URL: https://opensea.io/item/ronin/{contract_address}/{token_id}
+    item_url = f"https://opensea.io/item/ronin/{contract_address}/{token_id}" if contract_address and token_id else discord.Embed.Empty
 
     embed = discord.Embed(
-        title=f"Sale in {collection_name} ({market.capitalize()})",
-        description=f"**{name}** (ID: `{token_id}`)",
-        url=url
+        title=f"Chubby Fox #{token_id} has been sold!",
+        url=item_url
     )
 
     if quantity > 1:
-        embed.add_field(name="Sold for", value=f"{quantity} × {price_unit_str} = {price_total_str}", inline=True)
+        embed.add_field(name="Sold for", value=f"{quantity} × {price_unit_str} = {price_total_str}", inline=False)
+        embed.add_field(name="Quantity", value=str(quantity), inline=True)
     else:
-        embed.add_field(name="Sold for", value=price_total_str, inline=True)
+        embed.add_field(name="Sold for", value=price_total_str, inline=False)
 
-    embed.add_field(name="Quantity", value=str(quantity), inline=True)
-    embed.add_field(name="Buyer", value=f"`{buyer}`", inline=False)
-    embed.add_field(name="Seller", value=f"`{seller}`", inline=False)
+    # Shorten addresses for display (first 12 chars + ...)
+    def short_addr(addr):
+        return addr[:12] + '...' if len(addr) > 12 else addr
+
+    buyer_url = f"https://opensea.io/{buyer}"
+    seller_url = f"https://opensea.io/{seller}"
+    # Show Buyer and Seller as two columns: title above, address below
+    embed.add_field(name="From", value=f"[{short_addr(seller)}]({seller_url})", inline=True)
+    embed.add_field(name="To", value=f"[{short_addr(buyer)}]({buyer_url})", inline=True)
 
    
 

@@ -15,44 +15,24 @@ CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
 RONIN_API_URL = os.getenv("RONIN_API_URL")
 OPENSEA_API_URL = "https://api.opensea.io/api/v2/events"
 OPENSEA_API_KEY = os.getenv("OPENSEA_API_KEY")
-POLL_INTERVAL_SECONDS = int(os.getenv("POLL_INTERVAL_SECONDS"))
-FETCH_SIZE = int(os.getenv("FETCH_SIZE"))
+POLL_INTERVAL_SECONDS = 90
+FETCH_SIZE = 9
 
 # Lista de colecciones a trackear
 COLLECTIONS = [
     # OpenSea
-    {
-        "name": "Kojins",
-        "contract": os.getenv("CONTRACT_ADDRESS_KOJINS"),
-        "slug": "kojins",
-        "market": "opensea",
-        "last_timestamp": 0
-    },
-    {
-        "name": "Mounts",
-        "contract": os.getenv("CONTRACT_ADDRESS_MOUNTS"),
-        "slug": "realms-mounts",
-        "market": "opensea",
-        "last_timestamp": 0
-    },
+    # {
+    #     "name": "Chubby Foxes",
+    #     "contract": "0xd39c8d7e107db9a85896eb78e652496977b7f674",
+    #     "slug": "Foxes",
+    #     "market": "opensea",
+    #     "last_timestamp": 0
+    # },
 
     # Ronin (usando mismos contratos que OpenSea)
     {
-        "name": "Kojins",
-        "contract": os.getenv("CONTRACT_ADDRESS_KOJINS"),
-        "market": "ronin",
-        "last_timestamp": 0
-    },
-    {
-        "name": "Mounts",
-        "contract": os.getenv("CONTRACT_ADDRESS_MOUNTS"),
-        "market": "ronin",
-        "last_timestamp": 0
-    },
-
-    {
-        "name": os.getenv("COLLECTION_NAME"),
-        "contract": os.getenv("CONTRACT_ADDRESS_TICKETS"),
+        "name": "Chubby Foxes",
+        "contract": "0xd39c8d7e107db9a85896eb78e652496977b7f674",
         "market": "ronin",
         "last_timestamp": 0
     }

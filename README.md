@@ -1,20 +1,19 @@
-# 🐉 Realms Tracker
+# 🦊 Chubby Foxes Tracker
 
-A Python-based bot for tracking **NFT sales and events** in the Realms ecosystem, focusing on **Kojins** and **Mounts** collections (with plans to expand to more NFTs).
+A Python-based bot for tracking **NFT sales and events** in the Chubby Foxes ecosystem, focusing on the **Chubby Foxes** collection (with plans to expand to more NFTs).
 
 ---
-
-
-![Realms Tracker logo](images/image.png) !(images/image2.png)
 
 ## 📌 Project Overview
 
 **Features:**
+
 - Automated polling of Ronin/OpenSea APIs (configurable interval).
-- Discord notifications for new sales/events.
+- Discord notifications for new Chubby Foxes sales/events.
 - Free-tier hosting on Google Cloud (24/7 uptime).
 
 **Built with:**
+
 - Python + aiohttp (async API calls).
 - discord.py for Discord integration.
 - GraphQL for Ronin queries.
@@ -23,26 +22,26 @@ A Python-based bot for tracking **NFT sales and events** in the Realms ecosystem
 
 ## 🛠️ Key Features
 
-| Feature              | Description                                                                 |
-|----------------------|-----------------------------------------------------------------------------|
-| Configurable Polling | Default: 120 sec (to stay within GCP free tier limits).                     |
-| Efficient Tracking   | Fetches up to 100 events per call.                                          |
-| No Duplicates        | Stores last sales in `last_sales.json`.                                     |
-| Discord Alerts       | Formatted embeds with buyer/seller info, price, and links.                  |
+| Feature              | Description                                                |
+| -------------------- | ---------------------------------------------------------- |
+| Configurable Polling | Default: 120 sec (to stay within GCP free tier limits).    |
+| Efficient Tracking   | Fetches up to 100 events per call.                         |
+| No Duplicates        | Stores last sales in `last_sales.json`.                    |
+| Discord Alerts       | Formatted embeds with buyer/seller info, price, and links. |
 
 ---
 
 ## 📂 Files & Structure
 
 ```
-Test_bot/
+chubby-tracker/
 ├── bot.py             # Main script (Discord bot + polling loop)
 ├── sales_listener.py  # Handles API queries & data processing
 ├── query.py           # Query helpers/utilities
 ├── test_env.py        # Environment/test helpers
-├── image.png          # Project image/logo
 ├── images/
-│   └── image.png      # Example image asset
+│   ├── image.png      # Project image/logo
+│   └── image2.png     # Additional image asset
 ├── __init__.py        # Package marker
 ├── __pycache__/       # Python cache files
 ├── README.md          # This file
@@ -51,15 +50,16 @@ Test_bot/
 
 ---
 
+bash
+
 ## 🚀 Setup & Deployment
+
 🔧 Local Setup
 Clone the repo:
 
-bash
-Copiar
-Editar
-git clone https://github.com/alva-p/realms_tracker.git
-bash
+```bash
+git clone https://github.com/chubbyfoxes/chubby-tracker.git
+```
 
 Install dependencies:
 
@@ -69,18 +69,16 @@ pip install -r requirements.txt
 
 ---
 
-
 ## 🔗 Resources
 
-- 🌐 [Realms Official Site](https://roninrealms.com/)
-- 🖼️ [Kojin NFTs](https://marketplace.skymavis.com/collections/kojin)
-- 🐴 [Mounts NFTs](https://marketplace.roninchain.com/collections/realmsmounts)
+- 🦊 [Chubby Foxes Official Site](https://chubbyfoxes.xyz/)
+- 🦊 [Chubby Foxes NFTs](https://marketplace.roninchain.com/collections/chubby-foxes)
 
 ---
 
 ## 💡 Future Improvements
 
-- Add support for more Realms NFTs.
+- Add support for more Chubby Foxes NFTs and features.
 - Optimize API polling efficiency.
 - Multi-marketplace integration.
 
@@ -89,5 +87,5 @@ Contributions welcome! Open an issue or PR.
 ---
 
 <div align="center">
-	<strong>✨ P.S. ¡shout out to <span style="color:#e63946;">Berlin</span>! ✨</strong>
+	<strong>✨ P.S. ¡shout out to <span style="color:#e63946;">Pimmpi</span>! ✨</strong>
 </div>
