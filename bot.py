@@ -20,14 +20,14 @@ FETCH_SIZE = 9
 
 # Lista de colecciones a trackear
 COLLECTIONS = [
-    # OpenSea
-    # {
-    #     "name": "Chubby Foxes",
-    #     "contract": "0xd39c8d7e107db9a85896eb78e652496977b7f674",
-    #     "slug": "Foxes",
-    #     "market": "opensea",
-    #     "last_timestamp": 0
-    # },
+    OpenSea
+    {
+        "name": "Chubby Foxes",
+        "contract": "0xd39c8d7e107db9a85896eb78e652496977b7f674",
+        "slug": "Foxes",
+        "market": "opensea",
+        "last_timestamp": 0
+    },
 
     # Ronin (usando mismos contratos que OpenSea)
     {
