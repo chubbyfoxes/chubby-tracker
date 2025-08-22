@@ -1,4 +1,4 @@
-# bot.py
+
 import discord
 import asyncio
 import aiohttp
@@ -6,25 +6,24 @@ from sales_listener import check_sales
 from dotenv import load_dotenv
 import os
 
-# Cargar .env
 load_dotenv()
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
-API_KEY = os.getenv("API_KEY")  # API Key Ronin
+API_KEY = os.getenv("API_KEY")
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
 RONIN_API_URL = os.getenv("RONIN_API_URL")
 OPENSEA_API_URL = "https://api.opensea.io/api/v2/events"
 OPENSEA_API_KEY = os.getenv("OPENSEA_API_KEY")
-POLL_INTERVAL_SECONDS = 90
+POLL_INTERVAL_SECONDS = 10
 FETCH_SIZE = 9
 
 # Lista de colecciones a trackear
 COLLECTIONS = [
-    OpenSea
+    # OpenSea
     {
         "name": "Chubby Foxes",
         "contract": "0xd39c8d7e107db9a85896eb78e652496977b7f674",
-        "slug": "Foxes",
+        "slug": "chubby-foxes",
         "market": "opensea",
         "last_timestamp": 0
     },
@@ -42,9 +41,9 @@ COLLECTIONS = [
 class NFTSalesBot(discord.Client):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.session: aiohttp.ClientSession | None = None
+        self.session = None
         self.channel = None
-        self.seen_tx_hashes: set[str] = set()
+        self.seen_tx_hashes = set()
         self.running = True
         self.bg_task = None
 
@@ -53,13 +52,13 @@ class NFTSalesBot(discord.Client):
         self.bg_task = asyncio.create_task(self._poll_sales())
 
     async def on_ready(self):
-        print(f"Conectado como {self.user} (ID: {self.user.id})")
+        print(f"Connected as {self.user}")
         self.channel = self.get_channel(CHANNEL_ID)
         if not self.channel:
-            print(f"[ERROR] No se encontró el canal con ID {CHANNEL_ID}")
+            print(f"Channel {CHANNEL_ID} not found")
             await self.close()
             return
-        await self.channel.send("✅ **Bot  initiated**")
+        await self.channel.send("✅ Bot started")
 
     async def _poll_sales(self):
         await self.wait_until_ready()
@@ -72,8 +71,6 @@ class NFTSalesBot(discord.Client):
                         else f"{OPENSEA_API_URL}?collection_slug={collection['slug']}"
                     )
                     api_key = API_KEY if collection["market"] == "ronin" else OPENSEA_API_KEY
-
-                    print(f"[DEBUG] Consultando {collection['name']} en {collection['market']}")
                     new_ts = await check_sales(
                         self.session,
                         self.channel,
@@ -88,12 +85,8 @@ class NFTSalesBot(discord.Client):
                     )
                     if new_ts > collection["last_timestamp"]:
                         collection["last_timestamp"] = new_ts
-                        print(f"[INFO] last_timestamp actualizado a {new_ts} para {collection['name']}")
-                    else:
-                        print(f"[DEBUG] No se encontraron nuevas ventas para {collection['name']}")
             except Exception as e:
-                print(f"[ERROR] Ciclo de polling: {e}")
-
+                print(f"Polling error: {e}")
             await asyncio.sleep(POLL_INTERVAL_SECONDS)
 
     async def close(self):
@@ -103,7 +96,6 @@ class NFTSalesBot(discord.Client):
         if self.session:
             await self.session.close()
         await super().close()
-
 
 intents = discord.Intents.default()
 client = NFTSalesBot(intents=intents)
